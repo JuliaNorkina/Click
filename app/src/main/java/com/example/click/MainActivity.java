@@ -28,7 +28,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-
+        handlerThread.postTask(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                tvClick.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvClick.append("Click_");
+                    }
+                });
+            }
+        });
     }
 
 
@@ -36,15 +51,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Handler handler;
 
-        public MyHandlerThread(String name) {
+        MyHandlerThread(String name) {
             super(name);
         }
 
-        public void postTask(Runnable task){
+        void postTask(Runnable task) {
             handler.post(task);
         }
 
-        public void prepareHandler() {
+        void prepareHandler() {
             handler = new Handler(getLooper());
         }
     }
